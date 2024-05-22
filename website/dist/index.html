@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div
+      class="container mx-auto p-4 bg-white shadow-md rounded flex flex-col sm:flex-row"
+    >
+      <div class="flex-none items-center justify-center sm:mr-4">
+        <div class="items-center">
+          <img
+            class="block mx-auto h-24 sm:mx-0 sm:shrink-0 rendering-pixelated bg-slate-600 rounded-full p-1"
+            src="data:image/gif;base64,R0lGODlhIAAgAMZyAEopN08qQGUmKVIsP24nJ4McXV4rP3IqKHYsKoMuLKchSXQzMnowRX0zKpIuNaAuO4I5NMMkVL0pOIU7NpQ2QYk6PcYmUYs7QY08P8MqUY4+MK80P5E+PpFAOpJAOphBN9IuTJlCO7Q6Pp5FOZ9HOZ5JOKFIOaNMNdY8YOY6Peg7O59SReg8Pq1ROt9CPepAO+pBObJTPutDVrNXOdJSL+pKP+dOO+9RMu9Oa+FXQe1TWsVjPMxqPu5hMephQellL/djJe5pMc9yQvZqWftwHe9zLdZ7RvF2Qft2Hvp3HPh5H/WBI/p9QPmGHvmGH/iJGfqMMfeUF/eWF/mTRfeZH/eZIfeaHfuYP/edIfqcMfejL/ijVPm0KfmzQfqyTPm4KPq1SPq3Tvm2YvnCLvu9a/vAYvvAcvvIY/nNTvrZafrgaPvqefruefvskfvvkv7z6f37xf3/zv///////////////////////////////////////////////////////yH5BAEKAH8ALAAAAAAgACAAAAfNgH+Cg4SFhoeIiYqLjI2Oj5CRkosqMjVKk4gqN0NbTZmGKj1IXF1PoIQqQVhfY2BOqIIRNlBsbWphsX8RKExrcW9luhEgOmJwb2bDIDBLaW5kyzBAZ2xa0kBZaNexxC9AV15WmQEVggUZLDhTXlWoCB9/ChYpR1RUug0xDxJFUVK6/jhw8YNGEiIB/xjI4YNCwj8DPIjYkGBGwAEdRowQpGEHqAMQAHTAwIHQhRCZFpAogYHBwwktjKxAmVDACSE8HgoiYEKnz59Agw4KBAA7"
+            alt="Runner"
+          />
+        </div>
+      </div>
+      <div class="grow">
+        <form id="search-form">
+          <div class="flex flex-col mb-4">
+            <label for="search" class="text-lg font-medium mb-2">Search</label>
+            <input
+              type="search"
+              id="s"
+              name="search"
+              class="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm"
+              placeholder="Enter search terms"
+            />
+          </div>
+          <div class="flex items-center mb-4">
+            <button
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 shadow-sm"
+            >
+              Persist
+            </button>
+          </div>
+        </form>
+        <div id="result" class="text-sm font-small"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document
+      .getElementById('search-form')
+      .addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const s = document.getElementById('s').value;
+        const response = await fetch('/api?' + new URLSearchParams({ s }), {
+          method: 'PUT',
+          body: '',
+          headers: {
+            'Content-Length': 0,
+          },
+        });
+
+        if (!response.ok) {
+          console.error(response);
+          document.getElementById('result').innerHTML =
+            `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+  <strong class="font-bold">Failure</strong>
+  <span class="block sm:inline">${response.status}:${response.statusText}</span>
+  <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+  </span>
+</div>`;
+          return false;
+        }
+
+        const data = await response.json();
+        document.getElementById('result').innerHTML =
+          `<a class="font-small text-blue-600 dark:text-blue-500 hover:underline" href="${data.url}" target="_blank">${data.url}</a>`;
+        return false;
+      });
+  </script>
+</html>
