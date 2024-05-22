@@ -8,7 +8,7 @@ This is the companion repo for the blog post: [Using CloudFront as a Lightweight
 1. [`cloudfront-functions/czldAPIRequest.js`](cloudfront-functions/czldAPIRequest.js): The CloudFront function to rewrite the s3 object key and add search terms as metadata
 1. [`cloudfront-functions/czldAPIResponse.js`](cloudfront-functions/czldAPIResponse.js): The CloudFront function to create a json response with the resulting url
 1. [`cloudfront-functions/czldRedirect.js`](cloudfront-functions/czldRedirect.js): The CloudFront function extract the search terms from S3 metadata and redirect to Google
-1. [`cloudfront-functions/czldPost.js`](cloudfront-functions/czldPost.js): A CloudFront function unused in this stack, but that creates a presigned form to post to S3.
+1. [`cloudfront-functions/czldPost.js`](cloudfront-functions/czldPost.js): A CloudFront function unused in this stack, but that creates a presigned form to post to S3. **Note** If you use it, be sure to change the region I've hardcoded, put some credentials with the necessary permissions to write in KV Store and update the KV id as appropriate.
 
 ## Setup
 
